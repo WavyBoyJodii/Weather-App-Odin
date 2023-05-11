@@ -32,7 +32,7 @@ body {
   gap: 15px;
 }
 
-.search input {
+.search-input {
   border: 0;
   outline: 0;
   background: #ebfffc;
@@ -42,6 +42,43 @@ body {
   border-radius: 30px;
   flex: 1;
   font-size: 18px;
+  transition: 0.5s;
+}
+
+.error {
+  -webkit-animation: shake 0.2s ease-in-out 0s 2;
+  animation: shake 0.2s ease-in-out 0s 2;
+  border: solid 2px red;
+}
+
+@-webkit-keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
 }
 
 .search button {
@@ -61,6 +98,7 @@ body {
 .weather-icon {
   width: 250px;
   margin-top: 30px;
+  max-height: 280px;
 }
 
 .future {

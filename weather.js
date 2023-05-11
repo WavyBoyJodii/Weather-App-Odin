@@ -7,38 +7,44 @@ const secondDay = document.querySelector('.day2-day-name');
 const thirdDay = document.querySelector('.day3-day-name');
 const secondTemp = document.querySelector('.day2-temp');
 const thirdTemp = document.querySelector('.day3-temp');
-const searchInput = document.querySelector('.search input');
+const searchInput = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search button');
 
 const WEATHER_KEY = '9f17e3aae0634736b6200036232304';
 const GIPHY_MAP = new Map();
 
 async function getForecast(city) {
-  const response = await fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_KEY}&q=${city}&days=3`,
-    { mode: 'cors' }
-  );
-  const weatherObj = await response.json();
-  console.log(weatherObj);
+  try {
+    const response = await fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_KEY}&q=${city}&days=3`,
+      { mode: 'cors' }
+    );
+    const weatherObj = await response.json();
+    console.log(weatherObj);
 
-  mainTempDisplay.textContent = `${Math.round(weatherObj.current.temp_f)}°F`;
-  cityDisplay.textContent = weatherObj.location.name;
-  secondDay.textContent = getDayName(
-    `${weatherObj.forecast.forecastday[1].date} EST`,
-    'en-US'
-  );
-  thirdDay.textContent = getDayName(
-    `${weatherObj.forecast.forecastday[2].date} EST`,
-    'en-US'
-  );
-  secondTemp.textContent = `${Math.round(
-    weatherObj.forecast.forecastday[1].day.avgtemp_f
-  )}°F`;
-  thirdTemp.textContent = `${Math.round(
-    weatherObj.forecast.forecastday[2].day.avgtemp_f
-  )}°F`;
-  searchPic(weatherObj);
+    mainTempDisplay.textContent = `${Math.round(weatherObj.current.temp_f)}°F`;
+    cityDisplay.textContent = weatherObj.location.name;
+    secondDay.textContent = getDayName(
+      `${weatherObj.forecast.forecastday[1].date} EST`,
+      'en-US'
+    );
+    thirdDay.textContent = getDayName(
+      `${weatherObj.forecast.forecastday[2].date} EST`,
+      'en-US'
+    );
+    secondTemp.textContent = `${Math.round(
+      weatherObj.forecast.forecastday[1].day.avgtemp_f
+    )}°F`;
+    thirdTemp.textContent = `${Math.round(
+      weatherObj.forecast.forecastday[2].day.avgtemp_f
+    )}°F`;
+    searchPic(weatherObj);
+  } catch (error) {
+    addError();
+  }
 }
+
+searchInput.addEventListener('change', removeError);
 
 searchBtn.addEventListener('click', () => {
   getForecast(searchInput.value);
@@ -51,13 +57,10 @@ function addMapping(values, giphy) {
   });
 }
 
-addMapping([1000], 'Sun shine');
+addMapping([1000], 'Sunny day');
 addMapping([1003, 1009], 'partly cloudy skies');
-addMapping([1006], 'cloudy');
-addMapping(
-  [1063, 1072, 1150, 1153, 1168, 1180, 1183, 1204, 1240],
-  'light rain'
-);
+addMapping([1006], 'cloudy sky');
+addMapping([1063, 1072, 1150, 1153, 1168, 1180, 1183, 1204, 1240], 'rainy day');
 addMapping([1030, 1135, 1147], 'misty');
 addMapping(
   [
@@ -104,9 +107,30 @@ async function searchPic(weather) {
   thirdWeatherIcon.src = giphyData3.data.images.fixed_width_small.url;
 }
 
+function addError() {
+  searchInput.classList.add('error');
+  searchInput.textContent = '';
+  searchInput.placeholder = 'No Such City Exists';
+}
+
+function removeError() {
+  searchInput.classList.remove('error');
+}
+
 function getDayName(dateStr, locale) {
   console.log(dateStr);
   const date = new Date(dateStr);
   console.log(date);
   return date.toLocaleDateString(locale, { weekday: 'long' });
 }
+
+fetch(
+  'https://api.giphy.com/v1/gifs/translate?api_key=FqpTK8bHSV93nnubNKOSzRsLG02mKkHP&s=weatherman',
+  { mode: 'cors' }
+)
+  .then((response) => response.json())
+  .then((response) => {
+    mainWeatherIcon.src = response.data.images.original.url;
+    secondWeatherIcon.src = response.data.images.original.url;
+    thirdWeatherIcon.src = response.data.images.original.url;
+  });
