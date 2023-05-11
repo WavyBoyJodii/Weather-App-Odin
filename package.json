@@ -1,0 +1,25 @@
+{
+  "name": "weather-app-odin",
+  "version": "1.0.0",
+  "description": "Weather app for The Odin Project, used to practice Asynchronous Coding",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "eslintConfig": {
+  "extends": ["wesbos"]
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WavyBoyJodii/Weather-App-Odin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WavyBoyJodii/Weather-App-Odin/issues"
+  },
+  "homepage": "https://github.com/WavyBoyJodii/Weather-App-Odin#readme",
+  "dependencies": {
+    "eslint-config-wesbos": "^3.2.3"
+  }
+}
